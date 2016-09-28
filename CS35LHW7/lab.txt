@@ -1,0 +1,146 @@
+1. I implemented tr2b using getchar() and putchar() for stdin and stdout.
+   I implemented tr2u using read and write for stdin and stdout
+2. I tested the compiled tr2b and tr2u with short input.
+3. I created a large file with the following code
+for(int i = 0; i < 2000000; i++)
+{
+	printf("abc");
+}
+whose output is put into a file called largef.
+4. I tested the two tr programs with strace command.
+a) copy one file to another
+	strace ./tr2b abcd efgh < largf > outputb.txt
+    strace ./tr2u abcd efgh < largf > outputu.txt
+for tr2b:
+the output of the command is of the following pattern:
+read(0, "bcabcabcabcabcabcabcabcabcabcabc"..., 65536) = 65536
+write(1, "defdefdefdefdefdefdefdefdefdefde"..., 65536) = 65536
+read(0, "cabcabcabcabcabcabcabcabcabcabca"..., 65536) = 65536
+...
+with the last three lines as:
+read(0, "bcabcabcabcabcabcabcabcabcabcabc"..., 65536) = 36224
+write(1, "defdefdefdefdefdefdefdefdefdefde"..., 65536) = 65536
+read(0, "", 65536)                      = 0
+write(1, "efdefdefdefdefdefdefdefdefdefdef"..., 36224) = 36224
+exit_group(0)                           = ?
++++ exited with 0 +++
+
+for tr2u:
+the output of the command is of the following pattern:
+write(1, "a", 1)                        = 1
+read(0, "e", 1)                         = 1
+
+
+then I campare the total system calls of the two program.
+tr2b:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 57.14    0.000160           2        92           write
+ 42.86    0.000120          60         2           open
+  0.00    0.000000           0        94           read
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         4           fstat
+  0.00    0.000000           0        10           mmap
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         1           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.000280                   212         1 total
+tr2u:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 57.97    0.708625           0   6000000           write
+ 42.03    0.513789           0   6000002           read
+  0.00    0.000000           0         2           open
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         2           fstat
+  0.00    0.000000           0         8           mmap
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         1           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    1.222414              12000024         1 total
+b) copy file to the terminal
+	strace ./tr2b abcd efgh < largef
+    strace ./tr2u abcd efgh < largef
+    
+for tr2b the output is of the following pattern:
+read(0, "bcabcabcabcabcabcabcabcabcabcabc"..., 65536) = 65536
+write(1, "fdefdefdefdefdefdefdefdefdefdefd"..., 1024) = 1024
+the maximum amount of written is 1024 instead of 65536 for the terminal.
+for tr2b the output is of the following pattern:
+read(0, "a", 1)                         = 1
+write(1, "a", 1)                        = 1
+Comparing the total number of system calls:
+for tr2b:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 98.58    0.003056           1      5860           write
+  0.97    0.000030           0        94           read
+  0.45    0.000014           1        10           mmap
+  0.00    0.000000           0         2           open
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         4           fstat
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         1           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.003100                  5980         1 total
+for tr2u:
+% time     seconds  usecs/call     calls    errors syscall
+------ ----------- ----------- --------- --------- ----------------
+ 56.11    0.522344           0   6000000           write
+ 43.89    0.408536           0   6000002           read
+  0.00    0.000000           0         2           open
+  0.00    0.000000           0         2           close
+  0.00    0.000000           0         2           fstat
+  0.00    0.000000           0         8           mmap
+  0.00    0.000000           0         3           mprotect
+  0.00    0.000000           0         1           munmap
+  0.00    0.000000           0         1           brk
+  0.00    0.000000           0         1         1 access
+  0.00    0.000000           0         1           execve
+  0.00    0.000000           0         1           arch_prctl
+------ ----------- ----------- --------- --------- ----------------
+100.00    0.930880              12000024         1 total
+
+
+5. use time to compare the time used to execute both program
+a) from file to file
+time ./tr2b abc def < largef > output1
+real	0m0.200s
+user	0m0.111s
+sys	0m0.008s
+time ./tr2u abc def < largef > output2
+real	0m6.266s
+user	0m0.288s
+sys	0m5.894s
+b) from file to terminal
+time ./tr2b abc def < largef
+real	0m2.557s
+user	0m0.245s
+sys	0m0.048s
+time ./tr2u abc def < largef
+real	0m7.733s
+user	0m0.260s
+sys	0m7.461s
+
+It is obvious that buffered I/O is much faster than unbuffered.
+
+
+
+
+
+
+
+
+

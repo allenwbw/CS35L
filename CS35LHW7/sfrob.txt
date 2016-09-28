@@ -1,0 +1,25 @@
+I wrote a simple program to generate random word files.
+Number of words:    Number of comparison:
+10					41
+100					1101
+1000				23279
+10000				380044
+100000				5717785
+The estimated time complexity is NlogN
+
+
+Time performance for sfrob, sfrobu, sfrobs for a file containing 100000 words:
+sfrob:
+real	0m0.793s
+user	0m0.219s
+sys	0m0.006s
+
+sfrobu:
+real	0m2.235s
+user	0m0.213s
+sys	0m1.769s
+
+sfrobs:
+real	0m1.404s
+user	0m1.211s
+sys	0m0.019s
