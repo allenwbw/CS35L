@@ -1,0 +1,12 @@
+1. 'git checkout -b quote' create a new branch named quote
+2. 'git checkout v3.0' checkout version 3.0
+3. 'patch -p1 < D/quote-3.0-patch.txt' D is  whatever the directory.
+    apply the patch
+4. use the emacs command 'C-x 4 a' to create a ChangeLog
+5. go through each of the modified files to add entries to the ChangeLog
+6. 'git add .' 'git commit -F ChangeLog' commit the changes with the content of ChangeLog
+   as message.
+7. 'git format-patch -1 --stdout > ../formatted-patch.txt' create the formatted patch
+8. build the system , and make sure the patch works. Partner: Yujing Fan
+9. ignored make check errors
+10. make distdir and check the resulting ChangeLog file.

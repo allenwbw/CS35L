@@ -1,0 +1,8 @@
+1. the top left window shows a history of each commit, merge and split, 
+   wich message.
+2. the top middle window shows the author of the corresponding terms 
+   in the previous window.
+3. the top right window shows the date and time of the corresponding
+   terms in the previous window.
+4. the bottom left window shows the metadata about the commit,
+5. the bottom right window shows a changelog of the selected commit.

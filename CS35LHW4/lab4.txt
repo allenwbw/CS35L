@@ -1,0 +1,38 @@
+1. mkdir ~/gitroot create a directory called gitroot
+2. cd gitroot
+3. git clone git://git.savannah.gnu.org/diffutils.git and get a copy of the 
+   Diffutils Git repository.
+4. cd diffutils
+5. git log > ~/git-log.txt put the log of master branch into git-log.txt
+6. git tag > ~/git-tags.txt put the list of tags into git-tags.txt
+7. search git-log.txt for the hash key of the commit "maint: quote 'like this'
+   or "like this", not `like this'"
+8. use the command 'git format-patch -1 <hash key> --stdout > 
+   ../quote-patch.txt' to generate a patch for the commit.
+9. git checkout v3.0 checkout version 3.0
+10. 'patch -p1 < ../quote-patch.txt' command to apply the previously generated
+    patch.
+11. skipped some files and use the command 'git status' to see which file 
+    is modified.
+12. inspect all the non-'.c' files listed and undo all the changes with 
+    emacs commands 'C-x v =' and 'C-x v u'
+13. Manually inspect all the '*.c' files and undo all the changes that are not
+    character string changes by comparing the current file with previous
+    version shown by the command 'C-x v ='
+14. use emacs to inspect all the '*.c.rej' files and apply all the change to
+    its corresponding '*.c' file.
+15. use the commands 'git clean -n' and 'git clean -f' to remove untracked 
+    files
+16. 'git diff > ../quote-3.0-patch.txt' generate a new patch
+17. generate executable with the command'./bootstrap' './configure' and 'make'
+    as illustrated by the README-hacking file
+18. run the commands 'src/diff . -' and 'src/diff --help', verifying that the
+    quotes are with '' not `'.
+19. create directory 'mkdir ../diffutils-3.0-patch' and 
+    'mkdir ../diffutils-3.0'
+20. copy src folder to ../diffutils-3.0-patch
+21. checkout version 3.0, copy src folder to ../diffutils-3.0
+22. run diffutils-3.0-patch/diff -pru diffutils-3.0 diffutils-3.0-patch 
+    >quote-3.0-test.txt
+23. the files are not identical so the change is not innocuous.
+
