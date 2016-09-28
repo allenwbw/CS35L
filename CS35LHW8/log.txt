@@ -1,0 +1,34 @@
+1. export PATH=/usr/local/cs/bin:$PATH add path
+2. od -t fD -An -N 80000000 < /dev/urandom | tr -s ' ' '\n' > floating created a file called
+   floating containing 10000000 double precision floating point numbers.
+   -t fD create double precision floating points
+   -An get rid of offsets
+   -N 80000000 generate 80000000 bytes of data, the size of double is 8, so 10000000 numbers.
+3. 
+
+
+No multithreading
+time -p sort -g floating > /dev/null
+real 183.87
+user 183.66
+sys 0.21
+
+multithreading with 1,2,4,8 threads
+time -p sort -g --parallel=1 floating > /dev/null
+real 180.27
+user 180.08
+sys 0.20
+time -p sort -g --parallel=2 floating > /dev/null
+real 97.34
+user 185.99
+sys 0.25
+time -p sort -g --parallel=4 floating > /dev/null
+real 54.54
+user 185.53
+sys 0.30
+time -p sort -g --parallel=8 floating > /dev/null
+real 42.17
+user 242.57
+sys 0.37
+
+we can see the performance of sort improves proportionally as the number of threads increases.
