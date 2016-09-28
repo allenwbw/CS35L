@@ -1,0 +1,77 @@
+1. I used wget <URL> to download the coreutils-7.6.
+2. Use the command tar -xzvf coreutils-7.6.tar.gz to decompress file in my home 
+   directory.
+3. cd coreutils-7.6 into the decompressed file directory.
+4. look through the INSTALL file for detailed installation instruction.
+5. according to the INSTALL file, use the command ./configure --prefix=<absolut
+ directory> to change the install directory into a customized one. 
+ I used /w/home.05/eng/bowei/coreutilsInstall as the install directory.
+6. use the command 'make' and 'make install' to install the coreutils-7.6
+7. use the '/w/home.05/eng/bowei/coreutilsInstall/ls -l' command in the 
+   installed coreutils-7.6 to reproduce the bug. And notice 
+   the difference in the time format.
+   terminal log:
+   -rw-r--r--  1 bowei engugrad    15435 2016-01-14 23:58 alibaba
+   -rw-r--r--  1 bowei engugrad     8668 2013-04-08 09:46 assign2.html
+   -rwxr--r--  1 bowei engugrad      271 2016-01-15 00:07 buildwords
+   -rwxr--r--  1 bowei engugrad      271 2016-01-15 00:03 buildwords~
+   drwxr-xr-x 13 bowei engugrad     8192 2016-01-20 20:12 coreutils-7.6
+   -rw-r--r--  1 bowei engugrad 10014650 2016-01-20 14:52 coreutils-7.6.tar.gz
+8. cd into coreutils-7.6 directory.
+9. use the command 'emacs patch_file' to start a new text file and paste the
+   patch into patch_file.
+10. use the command 'patch -p1 < patch_file' to patch.
+11. use 'make' again. Shell displays the following:
+make  all-recursive
+make[1]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6'
+Making all in lib
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+make  all-recursive
+make[3]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+make[4]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+make[4]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+make[3]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/lib'
+Making all in src
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/src'
+make  all-am
+make[3]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/src'
+  CC     ls.o //only ls.c file is changed so make only created its object file
+  CCLD   dir
+  CCLD   vdir
+  CCLD   ls
+make[3]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/src'
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/src'
+Making all in doc
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/doc'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/doc'
+Making all in man
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/man'
+  GEN    dir.1
+  GEN    vdir.1
+  GEN    ls.1
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/man'
+Making all in po
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/po'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/po'
+Making all in tests
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/tests'
+make[2]: Nothing to be done for `all'.
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/tests'
+Making all in gnulib-tests
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make  all-recursive
+make[3]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make[4]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make[4]: Nothing to be done for `all-am'.
+make[4]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make[3]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6/gnulib-tests'
+make[2]: Entering directory `/w/home.05/eng/bowei/coreutils-7.6'
+make[2]: Nothing to be done for `all-am'.
+make[2]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6'
+make[1]: Leaving directory `/w/home.05/eng/bowei/coreutils-7.6'
+
+12. test the patched file noticing the bug is fixed.

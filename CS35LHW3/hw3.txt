@@ -1,0 +1,29 @@
+Q1:
+  The "case_long_iso_time_style:" is a goto statement and is already caught
+  by the switch statement, so is not necessary to remove it.
+Q2:
+   Since the coreutils now display unix formatted date no matter the locale
+   setting, people in countries that do not speak English or use such time 
+   format will have trouble understanding the time display. 
+Q3:
+   It print out the following error:
+   Traceback (most recent call last):
+  File "./randline.py", line 70, in <module>
+    main()
+  File "./randline.py", line 64, in main
+    sys.stdout.write(generator.chooseline())
+  File "./randline.py", line 34, in chooseline
+    return random.choice(self.lines)
+  File "/usr/lib64/python2.6/random.py", line 261, in choice
+    return seq[int(self.random() * len(seq))]  # raises IndexError if seq 
+    is empty
+IndexError: list index out of range
+   Such error is caused by the program trying to access a list with index
+   beyond the length of the list.
+Q4:
+ The program prints the following error:
+ File "./randline.py", line 65
+    except IOError as (errno, strerror):
+                      ^
+ SyntaxError: invalid syntax
+ Python3 has a different sytax than randline.py.

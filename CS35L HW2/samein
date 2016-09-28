@@ -1,0 +1,31 @@
+#!/bin/bash
+dir=$1
+IFS=$'\n'
+ALL_FILES=`find $dir -maxdepth 1 -type f | sort`
+declare -a ARRAY
+count=0
+for FILE in $ALL_FILES
+do
+  if [ -f "$FILE" ]; then
+     ARRAY[$count]="$FILE"
+     let count=count+1
+  fi
+done
+count1=0
+size1=${#ARRAY[@]}
+let size2=size1-1
+while [ $count1 -lt $size2 ]
+  do
+    let count2=count1+1
+    while [ $count2 -lt $size1 ]
+     do
+      cmp -s "${ARRAY[count1]}" "${ARRAY[count2]}"
+      if [ $? -eq 0 ]; then
+         rm "${ARRAY[count2]}"
+         ln "${ARRAY[count1]}" "${ARRAY[count2]}"
+      fi
+      let count2=count2+1
+     done
+     let count1=count1+1
+ done
+
